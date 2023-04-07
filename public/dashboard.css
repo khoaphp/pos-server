@@ -1,0 +1,63 @@
+*{font-size: 14px;}
+#sec_third_col{width: 100%; min-height: 500px;}
+#secondCol, #thirdCol{min-height: 200px;}
+#secondCol{width: 40%; float: left;}
+#thirdCol{width: 60%; float: right;}
+    #cates{width: 20%; float: left; min-width: 150px;}
+    .cateItem{ padding: 10px 10px 0px 10px; text-align: center; width: 100%; 
+        border: solid 1px green; margin: 3px 3px 1.5px 3px; color:aliceblue;
+        font-weight: bold; cursor: pointer;
+    }
+
+    #subCate, #subCateOptions{width: 79%; float: right; overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 400px;} 
+        #subCateOptions{height:400px}
+    .subCateItem, .subCateItemOption{width: 30%; float: left; margin: 5px; padding: 0px;
+        border: solid 1px deepskyblue; text-align: center; cursor: pointer; ;
+    }
+    .foodName{color:crimson}
+    .foodName, .foodPrice{font-size: 18px !important}
+    #subCateOptions h2{color: dodgerblue; margin-left: 5px; padding: 5px; margin-top: 10px; font-size: larger;}
+    .subCateItem:hover, .subCateItemOption:hover{background-color: dodgerblue; color:white}
+    .subCateItemHover{background-color: dodgerblue; color:white}
+    .subCateItem p{ margin: 0px;}
+    .subCateItemOption p{margin: 0px;}
+    
+#totalOrderSubsFinal, #totalOrderDiscount, #totalOrderSubs{font-size: 30px;}
+
+.blue{background-color: deepskyblue;}
+.yellow{background-color: darkgreen;}
+.orange{background-color: coral;}
+.red{background-color: crimson;}
+.black{background-color: black !important; color: white !important;}
+
+#formAddItem{position: fixed;bottom: 0;right: 0; width: 500px;}
+#btnMinus{width: 50px; height: 50px; background-image: url(./minus.png);}
+#btnPlus{width: 50px; height: 50px; background-image: url(./plus.png);}
+#btnMinus, #txtAmount, #btnPlus{float: right; margin: 5px; cursor: pointer;}
+#txtAmount{margin-top: 10px; text-align: center;  font-size: 20px; width: 100px;}
+
+.rowCustomerTypes{padding:5px 0px 5px 0px}
+#rowCustomerTypes_1, #rowCustomerTypes_2, #rowCustomerTypes_3, #rowCustomerTypes_4,  #rowCustomerTypes_5{width: 18%; float: left; text-align: center; padding:2px}
+
+#formAddItemOrder{position: fixed;bottom: 0;left: 0; margin-left:100px; width: 35%;}
+.rowAddOrder{padding:5px; width: 100%; background-color:azure; margin: 2px;}
+
+#tbTotal{width: 100%;;}
+#tbTotal tr td{text-align: center; padding:5px}
+#amountTotalDiscount{text-align: center; width: 120px;}
+.btnLeft{width:23%; text-align: center; padding:15px; background-color: dodgerblue; color: white; font-weight: bold; float: left; text-transform: uppercase; margin: 5px; cursor: pointer;}
+
+#listViewArea{width: 100%; height: 550px;  float: left; overflow: auto;
+    -webkit-overflow-scrolling: touch;}
+
+#tbOrders {width: 100%; margin-top: 20px;}
+#tbOrders tr{background-color: aliceblue; border-bottom: solid 1px #e6e9ed; cursor: pointer;}
+#tbOrders tr td{text-align: center; padding: 7px;}
+.tbOrders_dicountAmount{width: 40px; text-align: center;}
+.tbOrders_price{width: 40px; text-align: center;}
+.tbOrders_itemName{font-weight: bold; color: dodgerblue;}
+.btnUpdateDiscount, .btnUpdateSinglePrice, .btnUpdateAmount{width: 15px; margin-top: -6px;}
+
+#txtOrderName{width: 150px;}

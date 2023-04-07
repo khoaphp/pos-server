@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ProgressBar.js - Telegram Styled Progressbar</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <style>
+            .progress {
+                height: 80px;
+                width: 80px;
+                margin: 50px auto;
+            }
+
+            .progress > svg {
+                height: 100%;
+                display: block;
+            }
+
+            @keyframes rotating {
+              from {
+                transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -webkit-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+              }
+            }
+            @-webkit-keyframes rotating /* Safari and Chrome */ {
+              from {
+                transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -webkit-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+              }
+            }
+            .rotating {
+              -webkit-animation: rotating 2s linear infinite;
+              -moz-animation: rotating 2s linear infinite;
+              -ms-animation: rotating 2s linear infinite;
+              -o-animation: rotating 2s linear infinite;
+              animation: rotating 2s linear infinite;
+              transform-origin: 50% 50%;
+            }
+            table tr td{text-align: center;}
+        </style>
+    </head>
+    <body bgColor="black" style="color:white">
+        <table style="width:600px; margin:auto; margin-top:100px">
+            <tr>
+                <td>Database processing...</td>
+                <td>IP Proxy detector...</td>
+                <td>Checking devices...</td>
+            </tr>
+            <tr>
+                <td><span class="o"></span></td>
+                <td><span class="o2"></span></td>
+                <td><span class="o3"></span></td>
+            </tr>
+            <tr>
+                <td><div class="rotating progress" id="progress"></div></td>
+                <td><div class="rotating progress" id="progress2"></div>.</td>
+                <td><div class="rotating progress" id="progress3"></div></td>
+            </tr>
+        </table>
+        
+
+        <!-- These are probably out dated so you might want to use newest versions -->
+        <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.6.1/dist/progressbar.js"></script>
+
+        <script src="main2.js"></script>
+    </body>
+</html>

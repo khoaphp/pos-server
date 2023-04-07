@@ -1,0 +1,200 @@
+<style>
+    #tbl_Category{width: 100%;}
+    #tbl_Category_row1 td{color: brown; font-weight: bold;}
+    #tbl_Category tr td{padding:15px; text-align: center;}
+
+    #dashboard_subcategory{padding: 20px; background-color: black; color: white;}
+    #txt_Cate_Name{ margin-right: 20px;}
+    #chk_Cate_Status{margin-right: 20px;}
+</style>
+
+<div id="dashboard_subcategory">
+    <select id="sel_Cate">
+    </select>
+    <input id="txt_SubCate_Name" type="text" placeholder="Option name" />
+    <input id="txt_SubCate_Price_Single" type="text" placeholder="Single Price" />
+    <input id="txt_SubCate_Price_Mutiple" type="text" placeholder="Whalesale Price" />
+    <input id="txt_SubCate_Tax" type="text" placeholder="Tax (%)" />
+    Active <input type="checkbox" id="chk_SubCate_Status" checked />
+    <button id="btn_SubCategory_addNew">Add new</button>
+    <button id="btn_SubCategory_update">Update</button>
+</div>
+
+<div id="dashboard_category">
+    <table id="tbl_Category">
+    </table>
+</div>
+
+<script>
+    var selectedIdSubCate = null;
+    $(document).ready(function(){
+        getCategoyList();
+        getFoodList();
+    });
+
+    $("#btn_SubCategory_addNew").click(function(){
+        var checked = false;
+        if ($('#chk_SubCate_Status').is(":checked"))
+        {
+            checked = true;
+        }
+        
+        var name = $("#txt_SubCate_Name").val().trim();
+        if(name.length==0){
+            alert("Please type category name");
+        }else{
+
+            $.post("./administrator/options/addNew", {Name:name, Active:checked,
+                price_single:parseFloat($("#txt_SubCate_Price_Single").val()),
+                price_multiple:parseFloat($("#txt_SubCate_Price_Mutiple").val()), 
+                tax:parseFloat($("#txt_SubCate_Tax").val()), _idCategory:$("#sel_Cate").val()
+            }, function(data){
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    getFoodList();
+                    alert(data.message);                
+                }
+            });
+
+        }
+
+    });
+
+    $(document).on("click", ".btn_Category_update", function(){
+        var _idSubCate = $(this).attr("idsubcate");
+        $.post("./administrator/options/detail", {idOption:_idSubCate}, function(data){
+            if(data.result!=1){
+                alert(data.message);
+            }else{
+                selectedIdSubCate = _idSubCate;
+                $("#sel_Cate").val(data.data._idSubCate);
+                $("#txt_SubCate_Name").val(data.data.name);
+                $("#txt_SubCate_Price_Single").val(data.data.price_single);
+                $("#txt_SubCate_Price_Mutiple").val(data.data.price_multiple);
+                $("#txt_SubCate_Tax").val(data.data.tax);
+                $('#chk_SubCate_Status').prop('checked', data.data.active);
+            }
+        });
+    });
+
+    $("#btn_SubCategory_update").click(function(){
+        if(selectedIdSubCate==null){
+            alert("Please select food");
+        }else{
+            var checked = false;
+            if ($('#chk_SubCate_Status').is(":checked"))
+            {
+                checked = true;
+            }
+            
+            var name = $("#txt_SubCate_Name").val().trim();
+
+            if(name.length==0){
+                alert("Please type category name");
+            }else{
+
+                $.post("./administrator/options/update", {
+                    Name:name, Active:checked,
+                    price_single:parseFloat($("#txt_SubCate_Price_Single").val()),
+                    price_multiple:parseFloat($("#txt_SubCate_Price_Mutiple").val()), 
+                    tax:parseFloat($("#txt_SubCate_Tax").val()), _idCategory:$("#sel_Cate").val(),
+                    idOption:selectedIdSubCate
+                }, function(data){
+                    if(data.result!=1){
+                        alert(data.message);
+                    }else{
+                        getFoodList();
+                        alert(data.message);                
+                    }
+                });
+
+            }
+        }
+
+        
+        
+    });
+
+    $(document).on("click", ".btn_Category_delete", function(){
+        var _idSubCate = $(this).attr("idsubcate");
+        var choose = confirm("Are you sure you want to delete?");
+        if(choose){
+            $.post("./administrator/options/delete", {idSubCate:_idSubCate}, function(data){
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                    getFoodList();
+                }
+            });
+        }
+    });
+
+
+    function getCategoyList(){ // food list
+        $.post("./administrator/subcategory/list", function(data){
+            console.log(data);
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    $("#sel_Cate").html(`<option value="-1">--Food--</option>`);
+                    data.rows.forEach(function(row){
+                        var checked = ""; if(row.active){checked="checked";}
+                        $("#sel_Cate").append(`<option value="`+row._id+`">`+row.name+`</option> `);
+                    });
+                }
+        });
+    }
+
+    function getFoodList(){ // Options list
+        $.post("./administrator/options/list", function(data){
+            console.log(data);
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    $("#tbl_Category").html(`
+                    <tr id="tbl_Category_row1">
+                        <td>Ordering</td>
+                        <td>Food Name</td>
+                        <td>Option name</td>
+                        <td>Price Single</td>
+                        <td>Price Wholesale</td>
+                        <td>Tax</td>
+                        <td>Active</td>
+                        <td></td>
+                    </tr>
+                    `);
+                    data.rows.forEach(function(row){
+                        var checked = ""; if(row.active){checked="checked";}
+
+                        $.post("./administrator/subcategory/detail", {idSubCate:row._idSubCate}, function(data){
+                            var cateName = "";
+                            if(data.result==1){
+                                cateName = data.data.name;
+                            }
+                            $("#tbl_Category").append(`
+                                <tr>
+                                    <td>`+row.ordering3+`</td>
+                                    <td>`+cateName+`</td>
+                                    <td>`+row.name+`</td>
+                                    <td>$`+row.price_single+`</td>
+                                    <td>$`+row.price_multiple+`</td>
+                                    <td>`+row.tax+`</td>
+                                    <td><input type="checkbox" id="tbl_Category_activeChk" name="tbl_Category_activeChk" `+checked+` ></td>
+                                    <td>
+                                        <button class="btn_Category_delete" idSubCate="`+row._id+`">Delete</button>
+                                        <button class="btn_Category_update" idSubCate="`+row._id+`">Edit</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+
+                        
+                    });
+                }
+        });
+    }
+ 
+
+</script>

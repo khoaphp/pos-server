@@ -1,0 +1,70 @@
+<script>
+    setCookie("CURRENT_TYPE", "1"); // Multiple
+</script>
+<style>
+    #tabCus{width: 100%;}
+    #tabCusSingle, #tabCusMultiple, #tabCusPhone{width:33%; border: solid 1px black; padding:20px; float: left;
+    text-align: center; text-transform: uppercase; cursor: pointer; 
+    }
+    
+    .tabCurrent, #tabCusSingle:hover, #tabCusMultiple:hover, #tabCusPhone:hover{ background-color: chartreuse; font-weight: bold;}
+</style>
+<input type="hidden" id="orderType" value="2" />
+<div id="tabCus">
+    <div id="tabCusSingle" >
+        <a href="./dashboard">Single</a>
+    </div>
+    <div id="tabCusMultiple" class="tabCurrent">
+        <!-- <a href="./dashboard-2">Wholesale</a></div> -->
+        <a href="./dashboard-2">Corporate</a></div>
+    <div id="tabCusPhone">
+        <!-- <a href="./dashboard-3">Phone</a></div> -->
+        <a href="./dashboard-3">Phone</a></div>
+    <div style="display:block; clear: both; width: 100%; height:15px"></div>
+</div>
+
+<div class="rowCustomerTypes">
+
+    <div id="rowCustomerTypes_3">
+        <input type="text" id="customersGroup" name="customersGroup" list="cityname" placeholder="Company Name"> 
+        <datalist id="cityname">
+            <option value="Boston">
+            <option value="Cambridge">
+        </datalist>
+    </div>
+
+    <div id="rowCustomerTypes_4">
+        <input type="text" id="txtOrderName" placeholder="Who is ordering?" />
+    </div>
+
+    <!-- <div id="rowCustomerTypes_5">
+        <select id="paymentStatus" name="payment">
+            <option value="-1">--Status--</option>
+            <option value="0">Not paid</option>
+            <option value="1">Paid already</option>
+        </select>
+    </div> -->
+
+</div>
+<div id="listViewArea">
+    <table id="tbOrders">
+        <!-- <tr>
+            <td width="50%">
+                <div class="tbOrders_itemName">
+                    Capuchino
+                </div>
+                <div class="tbOrders_Options">
+                    Full cream (1.5$), less sugar (0$)
+                </div>
+            </td>
+            <td width="15%">x1</td>
+            <td width="15%">
+                <input type="text" class="tbOrders_dicountAmount" value="0" />
+                <img src="./btnSave.png" class="btnUpdateDiscount" />
+            </td>
+            <td width="30%">
+                <div id="tbOrders_total">100$</div>
+            </td>
+        </tr>  -->
+    </table>
+</div>

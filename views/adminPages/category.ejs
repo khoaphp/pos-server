@@ -1,0 +1,150 @@
+<style>
+    #tbl_Category{width: 700px;}
+    #tbl_Category_row1 td{color: brown; font-weight: bold;}
+    #tbl_Category tr td{padding:15px; text-align: center;}
+
+    #infoArea{padding: 20px; background-color: black; color: white;}
+    #txt_Cate_Name{ margin-right: 20px;}
+    #chk_Cate_Status{margin-right: 20px;}
+</style>
+
+<div id="infoArea">
+    <input id="txt_Cate_Name" type="text" placeholder="Category Name" />
+    Active <input type="checkbox" id="chk_Cate_Status" checked />
+    <button id="btn_Category_addNew">Add new</button>
+    <button id="btn_Category_update">Update</button>
+</div>
+
+<div id="dashboard_category">
+    <table id="tbl_Category">
+    </table>
+</div>
+
+<script>
+    var selectedIdCate = null;
+    $(document).ready(function(){
+        getCategoyList();
+    });
+
+    function getCategoyList(){
+        $.post("./administrator/category/list", function(data){
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    console.log(data.rows);
+                    $("#tbl_Category").html(`
+                    <tr id="tbl_Category_row1">
+                        <td>Ordering</td>
+                        <td>Category Name</td>
+                        <td>Active</td>
+                        <td></td>
+                    </tr>
+                    `);
+                    data.rows.forEach(function(row){
+                        var checked = ""; if(row.active){checked="checked";}
+                        $("#tbl_Category").append(`
+                        <tr>
+                            <td>`+row.ordering+`</td>
+                            <td>`+row.name+`</td>
+                            <td><input type="checkbox" id="tbl_Category_activeChk" name="tbl_Category_activeChk" `+checked+` ></td>
+                            <td>
+                                <button class="btn_Category_delete" idCate="`+row._id+`">Delete</button>
+                                <button class="btn_Category_update" idCate="`+row._id+`">Edit</button>
+                            </td>
+                        </tr>
+                        `);
+                    });
+                }
+        });
+    }
+
+    $("#btn_Category_addNew").click(function(){
+        var checked = false;
+        if ($('#chk_Cate_Status').is(":checked"))
+        {
+            checked = true;
+        }
+        
+        var name = $("#txt_Cate_Name").val().trim();
+        if(name.length==0){
+            alert("Please type category name");
+        }else{
+
+            $.post("./administrator/category/addNew", {Name:name, Active:checked}, function(data){
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    getCategoyList();
+                    alert(data.message);  
+                    location.reload();              
+                }
+            });
+
+        }
+
+    });
+
+    $(document).on("click", ".btn_Category_update", function(){
+        var _idCate = $(this).attr("idCate");
+        $.post("./administrator/category/detail", {idCate:_idCate}, function(data){
+            if(data.result!=1){
+                alert(data.message);
+            }else{
+                selectedIdCate = _idCate;
+                $("#txt_Cate_Name").val(data.data.name);
+                $('#chk_Cate_Status').prop('checked', data.data.active);
+            }
+        });
+    });
+
+    $("#btn_Category_update").click(function(){
+        if(selectedIdCate==null){
+            alert("Please select a category");
+        }else{
+            var checked = false;
+            if ($('#chk_Cate_Status').is(":checked"))
+            {
+                checked = true;
+            }
+            
+            var name = $("#txt_Cate_Name").val().trim();
+
+            if(name.length==0){
+                alert("Please type category name");
+            }else{
+
+                $.post("./administrator/category/update", {idCate:selectedIdCate, Name:name, Active:checked}, function(data){
+                    if(data.result!=1){
+                        alert(data.message);
+                    }else{
+                        alert(data.message);
+                        getCategoyList();
+                        $("#txt_Cate_Name").val("");
+                        $('#chk_Cate_Status').prop('checked', false);
+                        selectedIdCate = null;
+                    }
+                });
+
+            }
+        }
+
+        
+        
+    });
+
+    $(document).on("click", ".btn_Category_delete", function(){
+        var _idCate = $(this).attr("idCate");
+        var choose = confirm("Are you sure you want to delete?");
+        if(choose){
+            $.post("./administrator/category/delete", {idCate:_idCate}, function(data){
+                if(data.result!=1){
+                    alert(data.message);
+                }else{
+                    alert(data.message);
+                    getCategoyList();
+                }
+            });
+        }
+    });
+
+</script>

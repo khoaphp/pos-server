@@ -1,0 +1,96 @@
+<style>
+    #imgLogo{max-width: 300px;}
+</style>
+
+<div id="dashboard_config">
+
+    <div class="oneRow">
+        <img id="imgLogo" src="#" alt="" />
+        <input type="file" id="fileLogo" />
+    </div>
+
+    <div class="oneRow">
+        <input type="text" id="txtLine1" placeholder="Line 1" />
+    </div>
+
+    <div class="oneRow">
+        <input type="text" id="txtLine2" placeholder="Line 2" />
+    </div>
+
+    <div class="oneRow">
+        <input type="text" id="txtLine3" placeholder="Line 3" />
+    </div>
+
+    <div class="oneRow">
+        <input type="text" id="txtABN" placeholder="ABN" />
+    </div>
+
+    <div class="oneRow">
+        <input type="text" id="txtNumberPrint" placeholder="Print number" />
+    </div>
+
+    <div class="oneRow">
+        <input type="button" id="btnUpdateConfig" value="Update"/>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $.post("./config/data", function(data){
+            if(data.result==1){
+                $("#imgLogo").attr("src", data.info.logo);
+                $("#txtLine1").val(data.info.line1);
+                $("#txtLine2").val(data.info.line2);
+                $("#txtLine3").val(data.info.line3);
+                $("#txtABN").val(data.info.abn);
+                $("#txtNumberPrint").val(data.info.numberPrint);
+            }else{
+                alert(data.message);
+            }
+        });
+    
+        $("#btnUpdateConfig").click(function(){
+            $.post("./config/update", {
+                line1:$("#txtLine1").val(),
+                line2:$("#txtLine2").val(),
+                line3:$("#txtLine3").val(),
+                abn:$("#txtABN").val(),
+                numberPrint:$("#txtNumberPrint").val()
+            }, function(data){
+                alert(data.message);
+                window.reload();
+            });
+        });
+
+        $("#fileLogo").change(function(){
+            
+            var data = new FormData();
+            jQuery.each(jQuery('#fileLogo')[0].files, function(i, file) {
+                data.append('avatar', file);
+            });
+
+            jQuery.ajax({
+                url: './config/uploadLogo',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                type: 'POST', // For jQuery < 1.9
+                success: function(data){
+                    console.log(data);
+                    if(data.result==1){
+                        $("#imgLogo").attr("src", "./" + data.fileName);
+                        $.post("./config/updateLogo", {logo:data.fileName}, function(data){
+                            alert(data.message);
+                        });
+                    };
+                    
+                }
+            });
+
+        });
+    
+    });
+</script>

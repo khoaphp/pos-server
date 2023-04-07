@@ -1,0 +1,37 @@
+<style>
+
+</style>
+
+<div id="dashboard_config">
+
+
+
+    <div class="oneRow">
+        <textarea type="text" id="txtNote" placeholder="Note" style="width:80%; height:300px">
+        </textarea>
+    </div>
+
+    <div class="oneRow">
+        <button id="btnSaveNote">Save</button>
+    </div>
+    
+</div>
+
+<script>
+    $(document).ready(function(){
+
+        $.post("./config/data", function(data){
+                console.log(data);
+                    if(data.result==1){
+                        $("#txtNote").val(data.info.note);
+                    }
+        });
+
+
+        $("#btnSaveNote").click(function(){
+            $.post("./config/updateNote", {note:$("#txtNote").val()}, function(data){
+                alert(data.message);
+            });
+        });
+    });
+</script>

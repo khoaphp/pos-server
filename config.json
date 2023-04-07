@@ -1,0 +1,6 @@
+{
+    "domain":"http://localhost:3000",
+    "title": "Pos",
+    "secretTokenNo":"JKsadq78wdqw98da312rldkladkjasd1213spoajf",
+    "connectionString":"mongodb://127.0.0.1:27017/POS_001"
+}
